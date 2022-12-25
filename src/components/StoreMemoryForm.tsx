@@ -23,8 +23,12 @@ function StoreMemoryForm({ onStore }: StoreMemoryFormProps) {
 
     if (Number.isNaN(content)) {
       return alert(
-        `Content is not a valid base ${base} number. Please enter a valid number.`
+        `${form.content.value} is not a valid base ${base} number. Please enter a valid number.`
       );
+    }
+
+    if (content < 0 || content > 255) {
+      return alert(`${content} is not a valid 1 byte value`);
     }
 
     onStore(address, content);
