@@ -8,7 +8,7 @@ interface MemoryProps {
 function Memory({ cells, title }: MemoryProps) {
   return (
     <table className="border-collapse border text-center w-full">
-      <caption className="text-lg font-bold text-center py-2 sticky top-0 left-0 bg-white border-b-1 border-b-gray-200">
+      <caption className="text-lg font-bold text-center pb-2 sticky top-0 left-0 bg-white border-b-1 border-b-gray-200">
         {title}
       </caption>
       <thead>
