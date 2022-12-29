@@ -13,7 +13,7 @@ function Input({ id, label, placeholder, ...props }: InputProps) {
         {...props}
         id={id}
         placeholder={placeholder ?? label}
-        className="px-4 py-2 bg-gray-100 rounded w-full"
+        className="px-4 py-2 bg-gray-100 dark:bg-gray-700 rounded w-full"
       />
     </div>
   );

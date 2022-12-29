@@ -4,7 +4,7 @@ import Machine from './Machine';
 
 function App() {
   return (
-    <div className="h-screen grid grid-rows-layout">
+    <div className="h-screen grid grid-rows-layout dark:bg-gray-900 dark:text-gray-100">
       <Header />
       <Machine />
       <Footer />
