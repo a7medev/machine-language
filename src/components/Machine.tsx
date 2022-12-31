@@ -46,7 +46,7 @@ function Machine() {
   };
 
   return (
-    <div className="grid grid-cols-3">
+    <div className="lg:grid lg:grid-cols-3">
       <aside className="px-3 pb-5 overflow-scroll">
         <section className="mb-3">
           <h3 className="font-bold text-lg mb-2">Execution</h3>
@@ -72,11 +72,11 @@ function Machine() {
           <StoreMemoryForm onStore={storeMemory} />
         </section>
       </aside>
-      <aside className="h-full overflow-scroll">
-        <Memory cells={memory} title="Memory" />
-      </aside>
-      <aside className="h-full overflow-scroll">
+      <aside className="lg:h-full lg:overflow-scroll">
         <Memory cells={registers} title="Registers (CPU)" />
+      </aside>
+      <aside className="lg:h-full lg:overflow-scroll">
+        <Memory cells={memory} title="Memory" />
       </aside>
     </div>
   );
