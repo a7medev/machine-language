@@ -68,6 +68,16 @@ function Machine() {
         </section>
 
         <section className="mb-3">
+          <h3 className="font-bold text-lg mb-2">Screen</h3>
+          <p className="text-gray-600 dark:text-gray-300 italic">
+            ASCII text stored in memory cell at address 00
+          </p>
+          <p className="p-2 text-center border border-gray-200 dark:border-gray-600 rounded">
+            {String.fromCharCode(memory[0])}
+          </p>
+        </section>
+
+        <section className="mb-3">
           <h3 className="font-bold text-lg mb-2">Store in Memory</h3>
           <StoreMemoryForm onStore={storeMemory} />
         </section>
