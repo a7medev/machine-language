@@ -14,7 +14,7 @@ function useMemory(count: number) {
     );
   };
 
-  return [memory, store] as const;
+  return [memory, setMemory, store] as const;
 }
 
 export default useMemory;

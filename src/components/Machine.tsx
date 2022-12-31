@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { ChangeEvent, useState } from 'react';
+import { execute } from '../engine';
 import useMemory from '../hooks/useMemory';
 import Button from './Button';
 import Input from './Input';
@@ -11,14 +12,36 @@ const MEMORY_CELLS_COUNT = 256;
 function Machine() {
   const [counter, setCounter] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
-  const [registers, storeRegister] = useMemory(REGISTERS_COUNT);
-  const [memory, storeMemory] = useMemory(MEMORY_CELLS_COUNT);
+  const [registers, setRegisters] = useMemory(REGISTERS_COUNT);
+  const [memory, setMemory, storeMemory] = useMemory(MEMORY_CELLS_COUNT);
 
-  const handleRun = () => {
-    setIsRunning(true);
+  const handleCounterChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const value = +e.target.value;
+    setCounter(Number.isNaN(value) ? 0 : value);
   };
 
-  const handleStop = () => {
+  const run = () => {
+    setIsRunning(true);
+    try {
+      const [newCounter, newMemory, newRegisters] = execute(
+        counter,
+        memory,
+        registers
+      );
+
+      setCounter(newCounter);
+      setMemory(newMemory);
+      setRegisters(newRegisters);
+    } catch (error) {
+      if (error instanceof Error) {
+        alert(error.message);
+      }
+    } finally {
+      stop();
+    }
+  };
+
+  const stop = () => {
     setIsRunning(false);
   };
 
@@ -31,15 +54,15 @@ function Machine() {
             id="counter-input"
             label="Counter"
             value={counter}
-            onChange={(e) => setCounter(+e.target.value)}
+            onChange={handleCounterChange}
             readOnly={isRunning}
           />
           <span className="mr-2">
-            <Button disabled={isRunning} onClick={handleRun}>
+            <Button disabled={isRunning} onClick={run}>
               Run
             </Button>
           </span>
-          <Button disabled={!isRunning} onClick={handleStop}>
+          <Button disabled={!isRunning} onClick={stop}>
             Stop
           </Button>
         </section>
