@@ -46,6 +46,8 @@ function StoreMemoryForm({ onStore }: StoreMemoryFormProps) {
         onStore(address + i, value);
       }
     }
+
+    location.href = `#memory${address}`;
   };
 
   return (

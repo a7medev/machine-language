@@ -21,11 +21,6 @@ function Machine() {
     setCounter(Number.isNaN(value) ? 0 : value);
   };
 
-  const handleStoreMemory = (address: number, value: number) => {
-    storeMemory(address, value);
-    location.href = `#memory${address}`;
-  };
-
   const run = () => {
     setIsRunning(true);
     try {
@@ -85,13 +80,13 @@ function Machine() {
 
         <section className="mb-3">
           <h3 className="font-bold text-lg mb-2">Store in Memory</h3>
-          <StoreMemoryForm onStore={handleStoreMemory} />
+          <StoreMemoryForm onStore={storeMemory} />
         </section>
       </aside>
-      <aside className="lg:h-full lg:overflow-scroll lg:scroll-p-10">
+      <aside className="lg:h-full lg:overflow-scroll lg:scroll-p-10 lg:scroll-smooth">
         <Memory id="register" cells={registers} title="Registers (CPU)" />
       </aside>
-      <aside className="lg:h-full lg:overflow-scroll lg:scroll-p-10">
+      <aside className="lg:h-full lg:overflow-scroll lg:scroll-p-10 lg:scroll-smooth">
         <Memory id="memory" cells={memory} title="Memory" />
       </aside>
     </div>
