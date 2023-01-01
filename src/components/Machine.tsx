@@ -1,6 +1,7 @@
 import { ChangeEvent, useState } from 'react';
 import { execute } from '../engine';
 import useMemory from '../hooks/useMemory';
+import { toHex } from '../utils/bases';
 import Button from './Button';
 import Input from './Input';
 import Memory from './Memory';
@@ -16,7 +17,7 @@ function Machine() {
   const [memory, setMemory, storeMemory] = useMemory(MEMORY_CELLS_COUNT);
 
   const handleCounterChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const value = +e.target.value;
+    const value = parseInt(e.target.value, 16);
     setCounter(Number.isNaN(value) ? 0 : value);
   };
 
@@ -53,7 +54,7 @@ function Machine() {
           <Input
             id="counter-input"
             label="Counter"
-            value={counter}
+            value={toHex(counter)}
             onChange={handleCounterChange}
             readOnly={isRunning}
           />
