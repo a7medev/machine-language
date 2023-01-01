@@ -43,13 +43,13 @@ export function execute(
       store(registersDraft, arg1, byte2);
     } else if (operator === 0x3) {
       // STORE in memory
-      store(memoryDraft, byte2, arg1);
+      store(memoryDraft, byte2, registersDraft[arg1]);
     } else if (byte1 === 0x40) {
       // MOVE register values
       store(registersDraft, arg3, registersDraft[arg2]);
     } else if (operator === 0x5) {
       // ADD two's complement numbers
-      store(registersDraft, arg1, registersDraft[arg2] + registersDraft[arg1]);
+      store(registersDraft, arg1, registersDraft[arg2] + registersDraft[arg3]);
     } else if (operator === 0x6) {
       // ADD floating point numbers (stored as S EEE MMMM)
       const num1 = toDec(registersDraft[arg2]);
@@ -58,13 +58,13 @@ export function execute(
       store(registersDraft, arg1, toFloat(sum));
     } else if (operator === 0x7) {
       // OR
-      store(registersDraft, arg1, arg2 | arg3);
+      store(registersDraft, arg1, registersDraft[arg2] | registersDraft[arg3]);
     } else if (operator === 0x8) {
       // AND
-      store(registersDraft, arg1, arg2 & arg3);
+      store(registersDraft, arg1, registersDraft[arg2] & registersDraft[arg3]);
     } else if (operator === 0x9) {
       // XOR
-      store(registersDraft, arg1, arg2 ^ arg3);
+      store(registersDraft, arg1, registersDraft[arg2] ^ registersDraft[arg3]);
     } else if (operator === 0xa && arg2 === 0) {
       // ROTATE
       const content = registersDraft[arg1];
@@ -80,10 +80,11 @@ export function execute(
     } else if (operator === 0xb) {
       // JUMP
       if (registersDraft[arg1] === registersDraft[0]) {
-        c = byte2;
+        c = byte2 - 2; // -2 as it will be increased by 2 in at the end of the loop.
       }
     } else if (operator === 0xc && byte2 === 0) {
       // HALT
+      c += 2;
       break;
     } else {
       // UNKNOWN
