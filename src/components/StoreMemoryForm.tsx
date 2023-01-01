@@ -1,6 +1,7 @@
 import { FormEvent } from 'react';
 import Input from './Input';
 import Button from './Button';
+import MultilineInput from './MultilineInput';
 
 interface Form extends Element {
   base: RadioNodeList;
@@ -19,19 +20,32 @@ function StoreMemoryForm({ onStore }: StoreMemoryFormProps) {
     const form = e.target as Form;
     const base = +form.base.value;
     const address = parseInt(form.address.value, 16);
-    const content = parseInt(form.content.value, base);
+    const content = form.content.value.replaceAll(/\s/g, '');
 
-    if (Number.isNaN(content)) {
-      return alert(
-        `${form.content.value} is not a valid base ${base} number. Please enter a valid number.`
-      );
+    if (base === 10) {
+      const value = parseInt(content);
+      if (value < 0 || value > 255) {
+        return alert(`${content} cannot be stored in 1 byte.`);
+      }
+      if (Number.isNaN(content)) {
+        return alert(
+          `${content} is not a valid decimal number. Please enter a valid number.`
+        );
+      }
+      onStore(address, value);
+    } else {
+      const size = 8 / Math.log2(base);
+      for (let i = 0; i < content.length / size; i++) {
+        const str = content.substring(i * size, i * size + size);
+        const value = parseInt(str, base);
+        if (Number.isNaN(value)) {
+          return alert(
+            `${str} is not a valid base ${base} number. Please enter a valid number.`
+          );
+        }
+        onStore(address + i, value);
+      }
     }
-
-    if (content < 0 || content > 255) {
-      return alert(`${content} is not a valid 1 byte value`);
-    }
-
-    onStore(address, content);
   };
 
   return (
@@ -39,10 +53,16 @@ function StoreMemoryForm({ onStore }: StoreMemoryFormProps) {
       <Input
         id="address-input"
         name="address"
-        label="Address"
-        placeholder="Address in hexadecimal (e.g. 3E)"
+        label="Start Address"
+        placeholder="Start address in hexadecimal (e.g. 3E)"
       />
-      <Input id="content-input" name="content" label="Content" />
+      <MultilineInput
+        id="content-input"
+        name="content"
+        label="Content"
+        placeholder={'2145\n3100\nC000'}
+        minRows={3}
+      />
 
       <div className="mb-4">
         <label className="mr-3">
